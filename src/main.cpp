@@ -15,7 +15,7 @@ StatusIndicator statusIndicator(PinDefs.STATUS_LED_RED, PinDefs.STATUS_LED_GREEN
 
 ADXL345 accel;
 
-#define WIRE Wire
+#define WIRE Wire1
 
 LPS22 lps;
 
@@ -25,12 +25,7 @@ void setup() {
   Serial.println("Init");
   PinDefs.setupPins();
 
-  //WIRE.begin();
-  Serial.println("Init");
-
-
   statusIndicator.off();
-
 
   Serial.println("Accel Init");
   accel.begin();
@@ -38,39 +33,17 @@ void setup() {
   Serial.println("LPS Init");
   lps.begin();
 
-  Serial.println("LPS Began");
-
-  //lps.setDataRate(LPS22_RATE_10_HZ);
-
-  //Serial.println("Data rate set");
-
+  lps.setDataRate(LPS22_RATE_10_HZ);
 }
-/*
-100 Hz code:
-Update altitude
-Update acceleration
-Check arm
-Check igniters
-Log data
-
-10 Hz code:
-LED indicator
-Buzzer
-
-Todo:
-Figure out how to get empty cycle times (for determining if too much is happening during the 100 Hz code)
-*/
 
 void loop() {
   //print out the acceleration data
-  Serial.println("Workign");
   sensors_event_t event = accel.getEvent();
   Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
   Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.print("m/s^2 ");
   
   //print out the altitude data
-  Serial.print("Altitude: "); Serial.print(lps.readAltitude()); Serial.println("m");
+  Serial.print("\tAltitude: "); Serial.print(lps.readAltitude()); Serial.println("m");
   delay(100);
-
 }
